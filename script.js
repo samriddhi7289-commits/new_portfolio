@@ -46,4 +46,36 @@
   }
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
+
+  const certificateButtons = document.querySelectorAll('.certificate-button');
+  const certificateModal = document.getElementById('certificateModal');
+  const certificateModalImage = document.getElementById('certificateModalImage');
+  const certificateModalClose = document.getElementById('certificateModalClose');
+
+  certificateButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const src = button.dataset.cert;
+      if (!src || !certificateModal || !certificateModalImage) return;
+      certificateModalImage.src = src;
+      certificateModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const closeCertificateModal = () => {
+    certificateModal?.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (certificateModalImage) certificateModalImage.src = '';
+  };
+
+  certificateModalClose?.addEventListener('click', closeCertificateModal);
+  certificateModal?.addEventListener('click', (event) => {
+    if (event.target === certificateModal) closeCertificateModal();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && certificateModal?.classList.contains('is-open')) {
+      closeCertificateModal();
+    }
+  });
 })();
